@@ -15,6 +15,10 @@ This repo is the backend (API). The frontend lives here: https://github.com/Lone
 - MongoDB + Mongoose
 - Session-based auth
 
+## Data Model
+
+![ERD](docs/uratetrail-erd.png)
+
 ## Status
 
 Initializing, more to come.
