@@ -3,3 +3,6 @@ node_modules/
 
 # Environment variables
 .env
+
+# Internal working files (Claude memory, boilerplate reference)
+_internal/
