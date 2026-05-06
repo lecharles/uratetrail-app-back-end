@@ -10,8 +10,10 @@
 
 ### Backend (Carlos)
 
-- [ ] Smoke-test trails CRUD POST/PUT/DELETE via curl (only GET /trails verified so far in session 3)
+- [ ] Set up Postman collection (workflow: sign-in → save token → use in protected requests)
+- [ ] Smoke-test trails CRUD POST/PUT/DELETE via curl or Postman (only GET /trails verified so far in session 3)
 - [ ] Smoke-test 403 case on PUT/DELETE comments (user A trying to edit user B's comment)
+- [ ] Document Postman collection setup process
 - [ ] Deploy backend to Heroku
 - [ ] Confirm MongoDB Atlas IP whitelist still permits Heroku (already at 0.0.0.0/0)
 - [ ] Add API documentation polish to README if needed after frontend integration starts
@@ -34,11 +36,6 @@
 
 - [ ] Carlos creates `carlos-dev` branch on William's frontend repo for integration testing
 - [ ] Agree on JSON contract between backend and frontend (mostly done implicitly via API_TESTING.md)
-- [ ] Set up Trello board (required deliverable for GA)
-- [ ] Write user stories on Trello (As a [user role], I want [feature], so that [reason])
-- [ ] Add wireframes to Trello
-- [ ] Add ERD card to Trello
-- [ ] Submit planning materials for instructor approval
 
 ### Google Cloud (William → Carlos handoff)
 
@@ -109,4 +106,8 @@ Pulled from project requirements doc in `docs/REQUIREMENTS.md`.
 - [x] `GET /comments/trail/:trailId` smoke-tested via curl (verified trail-scoped query)
 - [x] `PUT /comments/:id` smoke-tested via curl (creator-only happy path verified)
 - [x] `DELETE /comments/:id` smoke-tested via curl (creator-only happy path verified)
-- [x] Postman collection: skipped in favor of curl + `docs/API_TESTING.md` reference doc
+- [x] Trello board set up (required deliverable for GA)
+- [x] User stories written on Trello (As a [user role], I want [feature], so that [reason])
+- [x] Wireframes added to Trello
+- [x] ERD card added to Trello
+- [x] Planning materials submitted for instructor approval
