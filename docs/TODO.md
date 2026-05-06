@@ -4,28 +4,27 @@
 
 ## Currently in progress
 
-- Backend foundation complete; awaiting Postman testing and seed script (Carlos, next session)
+- Backend functionally complete and end-to-end tested via curl. Awaiting frontend integration and Heroku deployment (Carlos, next session).
 
 ## Up next (priority order)
 
 ### Backend (Carlos)
 
-- [ ] Set up Postman collection (workflow: sign-in → save token → use in protected requests)
-- [ ] Test all trails CRUD endpoints via Postman
-- [ ] Test all comments CRUD endpoints via Postman, including creator-only checks
-- [ ] Build `seed.js` to pre-populate 5-10 trails (gather names, lat/lng, photo URLs)
-- [ ] Update README with API documentation (routes, request/response shapes)
+- [ ] Smoke-test trails CRUD POST/PUT/DELETE via curl (only GET /trails verified so far in session 3)
+- [ ] Smoke-test 403 case on PUT/DELETE comments (user A trying to edit user B's comment)
 - [ ] Deploy backend to Heroku
-- [ ] Document Postman collection setup process
+- [ ] Confirm MongoDB Atlas IP whitelist still permits Heroku (already at 0.0.0.0/0)
+- [ ] Add API documentation polish to README if needed after frontend integration starts
 
 ### Frontend (William)
 
+- [ ] Pull latest backend `main` and confirm `npm install` + `npm run dev` works against shared MongoDB
 - [ ] Use the React JWT auth template as starting point for the repo
 - [ ] Set up `VITE_BACK_END_SERVER_URL` env var
-- [ ] Build trail index page
-- [ ] Build trail detail page
+- [ ] Build trail index page (hit `GET /trails`)
+- [ ] Build trail detail page (hit `GET /trails/:id` and `GET /comments/trail/:trailId`)
 - [ ] Integrate Google Maps JavaScript API (William has API key)
-- [ ] Build comment form with star rating
+- [ ] Build comment form with star rating (hit `POST /comments`)
 - [ ] Build comment list display with average rating
 - [ ] Style according to chosen visual theme
 - [ ] Ensure WCAG 2.0 AA color contrast
@@ -33,13 +32,13 @@
 
 ### Shared
 
-- [ ] Agree on JSON contract between backend and frontend
+- [ ] Carlos creates `carlos-dev` branch on William's frontend repo for integration testing
+- [ ] Agree on JSON contract between backend and frontend (mostly done implicitly via API_TESTING.md)
 - [ ] Set up Trello board (required deliverable for GA)
 - [ ] Write user stories on Trello (As a [user role], I want [feature], so that [reason])
 - [ ] Add wireframes to Trello
 - [ ] Add ERD card to Trello
 - [ ] Submit planning materials for instructor approval
-- [ ] Carlos creates `carlos-dev` branch on William's frontend repo for integration testing
 
 ### Google Cloud (William → Carlos handoff)
 
@@ -81,12 +80,13 @@ Pulled from project requirements doc in `docs/REQUIREMENTS.md`.
 - [x] Frontend repo created on GitHub (William)
 - [x] Backend `package.json` initialized with all dependencies
 - [x] Backend `.gitignore` set up
-- [x] Backend `README.md` with team, stack, ERD section
+- [x] Backend `README.md` with team, stack, ERD section, getting-started guide, and API endpoint list
 - [x] ERD designed in dbdiagram.io and committed to repo (with `hashedPassword` matching boilerplate)
 - [x] Two-person team confirmed (Carlos + William)
 - [x] Branching strategy decided
 - [x] Auth approach decided: JWT (per Billy's boilerplate)
 - [x] `docs/TODO.md` and `docs/REQUIREMENTS.md` published
+- [x] `docs/API_TESTING.md` published with curl commands for every endpoint
 - [x] `_internal/` gitignored, contains memory files and boilerplate zips
 - [x] MongoDB Atlas: `uratetrail` database created in existing cluster
 - [x] `.env` configured with MONGODB_URI, SECRET_KEY, PORT
@@ -98,7 +98,15 @@ Pulled from project requirements doc in `docs/REQUIREMENTS.md`.
 - [x] `controllers/trails.js` (full CRUD)
 - [x] `controllers/comments.js` (full CRUD with creator-only edit/delete)
 - [x] `middlewares/verify-jwt.js`
-- [x] `server.js` wired with public + protected routes
+- [x] `server.js` wired with public + protected routes (auth, trails, comments all mounted)
 - [x] Server runs locally and connects to MongoDB
 - [x] Auth flow tested end-to-end with curl (sign-up, sign-in, wrong password, duplicate username all working correctly)
 - [x] Test user `testuser1` created and verified in MongoDB
+- [x] `seed.js` script built and run; 8 Bay Area + Sierra trails populated in MongoDB Atlas
+- [x] `GET /trails` smoke-tested via curl, returns all 8 seeded trails
+- [x] `POST /comments` smoke-tested via curl (verified user attached from JWT, not request body)
+- [x] `GET /comments` smoke-tested via curl (verified user and trail populated)
+- [x] `GET /comments/trail/:trailId` smoke-tested via curl (verified trail-scoped query)
+- [x] `PUT /comments/:id` smoke-tested via curl (creator-only happy path verified)
+- [x] `DELETE /comments/:id` smoke-tested via curl (creator-only happy path verified)
+- [x] Postman collection: skipped in favor of curl + `docs/API_TESTING.md` reference doc
