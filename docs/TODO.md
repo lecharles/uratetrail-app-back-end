@@ -4,40 +4,27 @@
 
 ## Currently in progress
 
-- Backend repo initial scaffold (Carlos)
+- Backend foundation complete; awaiting Postman testing and seed script (Carlos, next session)
 
 ## Up next (priority order)
 
 ### Backend (Carlos)
 
-- [ ] Update ERD: change `passwordHash` to `hashedPassword` (matches boilerplate convention), re-export image, replace in `docs/uratetrail-erd.png`
-- [ ] Install missing dependencies: `bcrypt`, `jsonwebtoken`
-- [ ] Add `start` and `dev` scripts to `package.json`
-- [ ] Create `.env` file with `MONGODB_URI`, `SECRET_KEY`, `PORT`
-- [ ] Set up MongoDB Atlas cluster
-- [ ] Build `db/connection.js`
-- [ ] Build `models/user.js` (with `hashedPassword` field and `toJSON` transform)
-- [ ] Build `models/trail.js`
-- [ ] Build `models/comment.js` (with refs to User and Trail)
-- [ ] Build `controllers/auth.js` (sign-up, sign-in)
-- [ ] Build `middlewares/verify-jwt.js`
-- [ ] Build `controllers/trails.js` (full CRUD)
-- [ ] Build `controllers/comments.js` (CRUD with creator-only edit/delete)
-- [ ] Build `controllers/users.js` (current user info)
-- [ ] Wire up `server.js` with all controllers and middleware
-- [ ] Build `seed.js` to pre-populate 5-10 trails
-- [ ] Test all endpoints in Postman
-- [ ] Set up `dev` branch
+- [ ] Set up Postman collection (workflow: sign-in → save token → use in protected requests)
+- [ ] Test all trails CRUD endpoints via Postman
+- [ ] Test all comments CRUD endpoints via Postman, including creator-only checks
+- [ ] Build `seed.js` to pre-populate 5-10 trails (gather names, lat/lng, photo URLs)
+- [ ] Update README with API documentation (routes, request/response shapes)
 - [ ] Deploy backend to Heroku
-- [ ] Document Postman collection setup
+- [ ] Document Postman collection setup process
 
 ### Frontend (William)
 
-- [ ] Use the React JWT auth template as the starting point for the repo
+- [ ] Use the React JWT auth template as starting point for the repo
 - [ ] Set up `VITE_BACK_END_SERVER_URL` env var
 - [ ] Build trail index page
 - [ ] Build trail detail page
-- [ ] Integrate Google Maps JavaScript API
+- [ ] Integrate Google Maps JavaScript API (William has API key)
 - [ ] Build comment form with star rating
 - [ ] Build comment list display with average rating
 - [ ] Style according to chosen visual theme
@@ -52,28 +39,30 @@
 - [ ] Add wireframes to Trello
 - [ ] Add ERD card to Trello
 - [ ] Submit planning materials for instructor approval
+- [ ] Carlos creates `carlos-dev` branch on William's frontend repo for integration testing
 
-### Google Cloud (Carlos)
+### Google Cloud (William → Carlos handoff)
 
-- [ ] Create Google Cloud project
-- [ ] Enable Maps JavaScript API
-- [ ] Enable Places API (New) for autocomplete (post-MVP)
-- [ ] Generate API key
+- [x] Create Google Cloud project (William)
+- [x] Generate API key (William)
 - [ ] Restrict key by HTTP referrer
 - [ ] Restrict key to specific APIs only
 - [ ] Set daily quota cap (cost guardrail)
 - [ ] Document setup process
+- [ ] Integrate key into frontend `.env`
 
 ## MVP definition (what must ship)
 
 Pulled from project requirements doc in `docs/REQUIREMENTS.md`.
 
-- [ ] Backend with Express + Node + MongoDB
+- [x] Backend with Express + Node + MongoDB
 - [ ] Frontend with React
-- [ ] JWT auth (sign up, sign in, sign out)
-- [ ] Authorization (guests cannot create/update/delete)
-- [ ] Three data entities (User, Trail, Comment) with at least one having a relationship with User
-- [ ] Full CRUD on backend and frontend
+- [x] JWT auth (sign up, sign in)
+- [ ] Sign out (frontend-only, William's working on it)
+- [x] Authorization (guests cannot access protected routes; verifyJwt blocks unauthenticated requests)
+- [x] Three data entities (User, Trail, Comment) with at least one having a relationship with User
+- [x] Full CRUD on backend
+- [ ] Full CRUD on frontend
 - [ ] No secret keys in frontend
 - [ ] Project deployed online
 
@@ -90,10 +79,26 @@ Pulled from project requirements doc in `docs/REQUIREMENTS.md`.
 
 - [x] Backend repo created on GitHub
 - [x] Frontend repo created on GitHub (William)
-- [x] Backend `package.json` initialized with core dependencies
+- [x] Backend `package.json` initialized with all dependencies
 - [x] Backend `.gitignore` set up
-- [x] Backend `README.md` created with team, stack, ERD section
-- [x] ERD designed in dbdiagram.io and added to README
+- [x] Backend `README.md` with team, stack, ERD section
+- [x] ERD designed in dbdiagram.io and committed to repo (with `hashedPassword` matching boilerplate)
 - [x] Two-person team confirmed (Carlos + William)
-- [x] Branching strategy decided (`dev` for backend, `carlos-dev` for testing on frontend)
+- [x] Branching strategy decided
 - [x] Auth approach decided: JWT (per Billy's boilerplate)
+- [x] `docs/TODO.md` and `docs/REQUIREMENTS.md` published
+- [x] `_internal/` gitignored, contains memory files and boilerplate zips
+- [x] MongoDB Atlas: `uratetrail` database created in existing cluster
+- [x] `.env` configured with MONGODB_URI, SECRET_KEY, PORT
+- [x] `db/connection.js` (Mongoose connection)
+- [x] `models/user.js` (with hashedPassword and toJSON transform)
+- [x] `models/trail.js`
+- [x] `models/comment.js` (with refs to User and Trail)
+- [x] `controllers/auth.js` (sign-up, sign-in)
+- [x] `controllers/trails.js` (full CRUD)
+- [x] `controllers/comments.js` (full CRUD with creator-only edit/delete)
+- [x] `middlewares/verify-jwt.js`
+- [x] `server.js` wired with public + protected routes
+- [x] Server runs locally and connects to MongoDB
+- [x] Auth flow tested end-to-end with curl (sign-up, sign-in, wrong password, duplicate username all working correctly)
+- [x] Test user `testuser1` created and verified in MongoDB
