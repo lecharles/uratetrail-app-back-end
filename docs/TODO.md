@@ -33,11 +33,11 @@
 
 ### Frontend (William)
 
-- [ ] Use the React JWT auth template as the starting point for the repo
-- [ ] Set up `VITE_BACK_END_SERVER_URL` env var
-- [ ] Build trail index page
+- [x] Use the React JWT auth template as the starting point for the repo
+- [x] Set up `VITE_BACK_END_SERVER_URL` env var
+- [x] Build trail index page
 - [ ] Build trail detail page
-- [ ] Integrate Google Maps JavaScript API
+- [x] Integrate Google Maps JavaScript API
 - [ ] Build comment form with star rating
 - [ ] Build comment list display with average rating
 - [ ] Style according to chosen visual theme
@@ -47,22 +47,22 @@
 ### Shared
 
 - [ ] Agree on JSON contract between backend and frontend
-- [ ] Set up Trello board (required deliverable for GA)
-- [ ] Write user stories on Trello (As a [user role], I want [feature], so that [reason])
-- [ ] Add wireframes to Trello
-- [ ] Add ERD card to Trello
-- [ ] Submit planning materials for instructor approval
+- [x] Set up Trello board (required deliverable for GA)
+- [x] Write user stories on Trello (As a [user role], I want [feature], so that [reason])
+- [x] Add wireframes to Trello
+- [x] Add ERD card to Trello
+- [x] Submit planning materials for instructor approval
 
 ### Google Cloud (Carlos)
 
-- [ ] Create Google Cloud project
-- [ ] Enable Maps JavaScript API
-- [ ] Enable Places API (New) for autocomplete (post-MVP)
-- [ ] Generate API key
-- [ ] Restrict key by HTTP referrer
-- [ ] Restrict key to specific APIs only
-- [ ] Set daily quota cap (cost guardrail)
-- [ ] Document setup process
+- [x] Create Google Cloud project
+- [x] Enable Maps JavaScript API
+- [x] Enable Places API (New) for autocomplete (post-MVP)
+- [x] Generate API key
+- [x] Restrict key by HTTP referrer
+- [x] Restrict key to specific APIs only
+- [x] Set daily quota cap (cost guardrail)
+- [x] Document setup process
 
 ## MVP definition (what must ship)
 
