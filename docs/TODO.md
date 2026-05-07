@@ -4,38 +4,36 @@
 
 ## Currently in progress
 
-- Backend functionally complete and end-to-end tested via curl. Awaiting frontend integration and Heroku deployment (Carlos, next session).
+- Backend complete and fully tested (every endpoint and authorization case proven via curl). Pivoting to frontend integration tonight: pulling William's repo, creating `carlos-dev` branch, debugging trails display end-to-end against the local backend.
 
 ## Up next (priority order)
 
-### Backend (Carlos)
+### Shared (active, blocking integration)
 
-- [ ] Set up Postman collection (workflow: sign-in → save token → use in protected requests)
-- [ ] Smoke-test trails CRUD POST/PUT/DELETE via curl or Postman (only GET /trails verified so far in session 3)
-- [ ] Smoke-test 403 case on PUT/DELETE comments (user A trying to edit user B's comment)
-- [ ] Document Postman collection setup process
-- [ ] Deploy backend to Heroku
-- [ ] Confirm MongoDB Atlas IP whitelist still permits Heroku (already at 0.0.0.0/0)
-- [ ] Add API documentation polish to README if needed after frontend integration starts
+- [ ] Carlos creates `carlos-dev` branch on William's frontend repo for integration testing
+- [ ] Get end-to-end working: William's frontend pulling and rendering trails from the local backend with valid JWT
+- [ ] Agree on JSON contract between backend and frontend (mostly done implicitly via API_TESTING.md)
 
-### Frontend (William)
+### Frontend (William, active)
 
 - [ ] Pull latest backend `main` and confirm `npm install` + `npm run dev` works against shared MongoDB
-- [ ] Use the React JWT auth template as starting point for the repo
 - [ ] Set up `VITE_BACK_END_SERVER_URL` env var
 - [ ] Build trail index page (hit `GET /trails`)
 - [ ] Build trail detail page (hit `GET /trails/:id` and `GET /comments/trail/:trailId`)
-- [ ] Integrate Google Maps JavaScript API (William has API key)
 - [ ] Build comment form with star rating (hit `POST /comments`)
 - [ ] Build comment list display with average rating
+- [ ] Integrate Google Maps JavaScript API (William has API key)
 - [ ] Style according to chosen visual theme
 - [ ] Ensure WCAG 2.0 AA color contrast
 - [ ] Deploy frontend to Heroku
 
-### Shared
+### Backend (Carlos, deferred)
 
-- [ ] Carlos creates `carlos-dev` branch on William's frontend repo for integration testing
-- [ ] Agree on JSON contract between backend and frontend (mostly done implicitly via API_TESTING.md)
+- [ ] Deploy backend to Heroku
+- [ ] Confirm MongoDB Atlas IP whitelist still permits Heroku (already at 0.0.0.0/0)
+- [ ] Add API documentation polish to README if needed after frontend integration starts
+- [ ] Set up Postman collection (workflow: sign-in → save token → use in protected requests) — deferred, curl + API_TESTING.md is sufficient for now
+- [ ] Document Postman collection setup process — deferred, only relevant if Postman gets set up
 
 ### Google Cloud (William → Carlos handoff)
 
@@ -83,7 +81,7 @@ Pulled from project requirements doc in `docs/REQUIREMENTS.md`.
 - [x] Branching strategy decided
 - [x] Auth approach decided: JWT (per Billy's boilerplate)
 - [x] `docs/TODO.md` and `docs/REQUIREMENTS.md` published
-- [x] `docs/API_TESTING.md` published with curl commands for every endpoint
+- [x] `docs/API_TESTING.md` published with curl commands for every endpoint, including 403 cross-user authorization tests
 - [x] `_internal/` gitignored, contains memory files and boilerplate zips
 - [x] MongoDB Atlas: `uratetrail` database created in existing cluster
 - [x] `.env` configured with MONGODB_URI, SECRET_KEY, PORT
@@ -99,13 +97,20 @@ Pulled from project requirements doc in `docs/REQUIREMENTS.md`.
 - [x] Server runs locally and connects to MongoDB
 - [x] Auth flow tested end-to-end with curl (sign-up, sign-in, wrong password, duplicate username all working correctly)
 - [x] Test user `testuser1` created and verified in MongoDB
+- [x] Test user `testuser2` created and verified in MongoDB (for cross-user authorization testing)
 - [x] `seed.js` script built and run; 8 Bay Area + Sierra trails populated in MongoDB Atlas
 - [x] `GET /trails` smoke-tested via curl, returns all 8 seeded trails
+- [x] `GET /trails/:id` smoke-tested via curl
+- [x] `POST /trails` smoke-tested via curl (creates trail with all fields)
+- [x] `PUT /trails/:id` smoke-tested via curl (verified `updatedAt` advances while `createdAt` stays frozen)
+- [x] `DELETE /trails/:id` smoke-tested via curl (returns `{"message":"Trail deleted"}`)
 - [x] `POST /comments` smoke-tested via curl (verified user attached from JWT, not request body)
 - [x] `GET /comments` smoke-tested via curl (verified user and trail populated)
 - [x] `GET /comments/trail/:trailId` smoke-tested via curl (verified trail-scoped query)
-- [x] `PUT /comments/:id` smoke-tested via curl (creator-only happy path verified)
-- [x] `DELETE /comments/:id` smoke-tested via curl (creator-only happy path verified)
+- [x] `PUT /comments/:id` happy path smoke-tested via curl (creator can edit own comment)
+- [x] `PUT /comments/:id` 403 case smoke-tested via curl (testuser2 blocked from editing testuser1's comment)
+- [x] `DELETE /comments/:id` happy path smoke-tested via curl (creator can delete own comment)
+- [x] `DELETE /comments/:id` 403 case smoke-tested via curl (testuser2 blocked from deleting testuser1's comment)
 - [x] Trello board set up (required deliverable for GA)
 - [x] User stories written on Trello (As a [user role], I want [feature], so that [reason])
 - [x] Wireframes added to Trello
