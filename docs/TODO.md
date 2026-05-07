@@ -4,34 +4,26 @@
 
 ## Currently in progress
 
-- Backend complete and fully tested (every endpoint and authorization case proven via curl). Pivoting to frontend integration tonight: pulling William's repo, creating `carlos-dev` branch, debugging trails display end-to-end against the local backend.
+- Backend complete and fully tested. William is finishing the last frontend pieces tonight (image rendering, comment submission). Tomorrow: Heroku deployment for both repos at the same time, then end-to-end run-through together around 6pm. Project may be feature-complete by end of tomorrow.
 
 ## Up next (priority order)
 
-### Shared (active, blocking integration)
+### Tomorrow's plan (joint)
 
-- [ ] Carlos creates `carlos-dev` branch on William's frontend repo for integration testing
-- [ ] Get end-to-end working: William's frontend pulling and rendering trails from the local backend with valid JWT
-- [ ] Agree on JSON contract between backend and frontend (mostly done implicitly via API_TESTING.md)
+- [ ] Carlos and William deploy backend and frontend to Heroku together
+- [ ] Confirm MongoDB Atlas IP whitelist still permits Heroku (already at 0.0.0.0/0)
+- [ ] End-to-end run-through around 6pm: sign up new users, browse trails, submit comments, verify map and rating UI all work against the deployed backend
+- [ ] Optional stretch: Places Autocomplete (only if everything else is solid; both teammates fine with meeting requirements without it)
 
-### Frontend (William, active)
+### Frontend (William, active tonight)
 
-- [ ] Pull latest backend `main` and confirm `npm install` + `npm run dev` works against shared MongoDB
-- [ ] Set up `VITE_BACK_END_SERVER_URL` env var
-- [ ] Build trail index page (hit `GET /trails`)
-- [ ] Build trail detail page (hit `GET /trails/:id` and `GET /comments/trail/:trailId`)
-- [ ] Build comment form with star rating (hit `POST /comments`)
-- [ ] Build comment list display with average rating
-- [ ] Integrate Google Maps JavaScript API (William has API key)
+- [ ] Get image URLs to populate in trail detail / photo section (data already in seed via `imageUrl`)
+- [ ] Build comment + rating submission to `POST /comments`
 - [ ] Style according to chosen visual theme
 - [ ] Ensure WCAG 2.0 AA color contrast
-- [ ] Deploy frontend to Heroku
 
 ### Backend (Carlos, deferred)
 
-- [ ] Deploy backend to Heroku
-- [ ] Confirm MongoDB Atlas IP whitelist still permits Heroku (already at 0.0.0.0/0)
-- [ ] Add API documentation polish to README if needed after frontend integration starts
 - [ ] Set up Postman collection (workflow: sign-in → save token → use in protected requests) — deferred, curl + API_TESTING.md is sufficient for now
 - [ ] Document Postman collection setup process — deferred, only relevant if Postman gets set up
 
@@ -39,24 +31,24 @@
 
 - [x] Create Google Cloud project (William)
 - [x] Generate API key (William)
+- [x] Integrate key into frontend `.env` (William, completed during integration)
 - [ ] Restrict key by HTTP referrer
 - [ ] Restrict key to specific APIs only
 - [ ] Set daily quota cap (cost guardrail)
 - [ ] Document setup process
-- [ ] Integrate key into frontend `.env`
 
 ## MVP definition (what must ship)
 
 Pulled from project requirements doc in `docs/REQUIREMENTS.md`.
 
 - [x] Backend with Express + Node + MongoDB
-- [ ] Frontend with React
+- [x] Frontend with React (rendering trails from backend as of session 4)
 - [x] JWT auth (sign up, sign in)
 - [ ] Sign out (frontend-only, William's working on it)
 - [x] Authorization (guests cannot access protected routes; verifyJwt blocks unauthenticated requests)
 - [x] Three data entities (User, Trail, Comment) with at least one having a relationship with User
 - [x] Full CRUD on backend
-- [ ] Full CRUD on frontend
+- [ ] Full CRUD on frontend (comments POST is the last piece; William finishing tonight)
 - [ ] No secret keys in frontend
 - [ ] Project deployed online
 
@@ -99,11 +91,11 @@ Pulled from project requirements doc in `docs/REQUIREMENTS.md`.
 - [x] Test user `testuser1` created and verified in MongoDB
 - [x] Test user `testuser2` created and verified in MongoDB (for cross-user authorization testing)
 - [x] `seed.js` script built and run; 8 Bay Area + Sierra trails populated in MongoDB Atlas
-- [x] `GET /trails` smoke-tested via curl, returns all 8 seeded trails
+- [x] `GET /trails` smoke-tested via curl
 - [x] `GET /trails/:id` smoke-tested via curl
-- [x] `POST /trails` smoke-tested via curl (creates trail with all fields)
+- [x] `POST /trails` smoke-tested via curl
 - [x] `PUT /trails/:id` smoke-tested via curl (verified `updatedAt` advances while `createdAt` stays frozen)
-- [x] `DELETE /trails/:id` smoke-tested via curl (returns `{"message":"Trail deleted"}`)
+- [x] `DELETE /trails/:id` smoke-tested via curl
 - [x] `POST /comments` smoke-tested via curl (verified user attached from JWT, not request body)
 - [x] `GET /comments` smoke-tested via curl (verified user and trail populated)
 - [x] `GET /comments/trail/:trailId` smoke-tested via curl (verified trail-scoped query)
@@ -116,3 +108,8 @@ Pulled from project requirements doc in `docs/REQUIREMENTS.md`.
 - [x] Wireframes added to Trello
 - [x] ERD card added to Trello
 - [x] Planning materials submitted for instructor approval
+- [x] Carlos cloned William's frontend repo locally and created `carlos-dev` branch (pushed to William's remote)
+- [x] Carlos fixed App.jsx referencing undefined Trails component (replaced with TrailIndex import); committed and pushed to carlos-dev
+- [x] Frontend confirmed running locally against shared MongoDB via `.env` with `VITE_BACK_END_SERVER_URL`
+- [x] Trail name, location, and description rendering on frontend from backend seed data (William)
+- [x] Google Maps integration wired up and rendering trails on the map (William)
