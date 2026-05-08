@@ -20,20 +20,20 @@ MERN stack group project for General Assembly Software Engineering Bootcamp Unit
 
 ## Data Model
 
-Three entities: User, Trail, Comment. A User has many Comments, a Trail has many Comments, and the User-to-Trail relationship is derived through Comments.
+Three entities: User, Trail, Comment. A User has many Comments, a Trail has many Comments, and the User-to-Trail relationship is derived through Comments (not a direct many-to-many).
 
 ![ERD](docs/uratetrail-erd.png)
 
 ## Status
 
-Backend is functional and tested. Auth, trails CRUD, and comments CRUD are all working against MongoDB Atlas. 8 trails seeded for development. Frontend integration and Heroku deployment are next.
+Backend is functional and tested. Auth, trails CRUD, and comments CRUD are all working against MongoDB Atlas. 9 trails seeded for development. JSON error middleware in place. Frontend integration and Heroku deployment are next.
 
 ## Getting started
 
 ### Prerequisites
 
 - Node.js 18+
-- A MongoDB Atlas connection URI (Carlos for team's shared URI)
+- A MongoDB Atlas connection URI (ask Carlos for the team's shared URI)
 
 ### Setup
 
@@ -70,7 +70,7 @@ The express app is ready on port 3000!
 
 ### Seeding test data
 
-The trails collection ships with 8 hand-picked Bay Area and Sierra trails. To populate (or repopulate) them:
+The trails collection ships with 9 hand-picked Bay Area and Sierra trails. To populate (or repopulate) them:
 
 ~~~bash
 node seed.js
@@ -98,7 +98,9 @@ This wipes the trails collection before inserting, so it is safe to rerun any ti
 - `PUT /comments/:id` - update (creator only, returns 403 otherwise)
 - `DELETE /comments/:id` - delete (creator only, returns 403 otherwise)
 
-For copy-paste curl commands covering every endpoint, see [`docs/API_TESTING.md`](docs/API_TESTING.md).
+All errors return JSON with shape `{ "err": "message" }`. Unknown routes return 404, resource not found returns 404, invalid token returns 401.
+
+For copy-paste curl commands covering every endpoint plus error cases, see [`docs/API_TESTING.md`](docs/API_TESTING.md).
 
 ## Project documentation
 

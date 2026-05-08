@@ -56,7 +56,7 @@ curl http://localhost:3000/trails/69facdda9953e946b7dedc1e \
   -H "Authorization: Bearer $TOKEN1"
 ~~~
 
-(That ID is Lands End Trail from the seeded data. Replace with any other trail's `_id` from the list endpoint.)
+(That ID is Lands End Trail from the seeded data. IDs change on reseed.)
 
 ### Create a trail
 
@@ -64,32 +64,30 @@ curl http://localhost:3000/trails/69facdda9953e946b7dedc1e \
 curl -X POST http://localhost:3000/trails \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $TOKEN1" \
-  -d '{"name":"Smoke Test Trail","lat":37.7749,"lng":-122.4194,"description":"A throwaway trail created during smoke testing. Will be deleted shortly.","imageUrl":"https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200"}'
+  -d '{"name":"Smoke Test Trail","lat":37.7749,"lng":-122.4194,"description":"A throwaway trail created during smoke testing.","imageUrl":"https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200"}'
 ~~~
 
-Returns the new trail with a fresh `_id`. Capture the `_id` to use in the update and delete tests below.
+Returns the new trail with a fresh `_id`. Capture for update/delete tests.
 
 ### Update a trail
 
 ~~~bash
-curl -X PUT http://localhost:3000/trails/<TRAIL_ID_FROM_CREATE> \
+curl -X PUT http://localhost:3000/trails/<TRAIL_ID> \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $TOKEN1" \
-  -d '{"description":"Updated description: this trail will be deleted in the next test."}'
+  -d '{"description":"Updated description."}'
 ~~~
 
-Returns the updated trail. Note that `updatedAt` advances while `createdAt` stays frozen.
+`updatedAt` advances; `createdAt` stays frozen.
 
 ### Delete a trail
 
 ~~~bash
-curl -X DELETE http://localhost:3000/trails/<TRAIL_ID_FROM_CREATE> \
+curl -X DELETE http://localhost:3000/trails/<TRAIL_ID> \
   -H "Authorization: Bearer $TOKEN1"
 ~~~
 
-Returns `{ "message": "Trail deleted" }` on success.
-
-(Don't run DELETE against a seeded trail unless you want to remove it. Run `node seed.js` again to repopulate.)
+Returns `{ "message": "Trail deleted" }`.
 
 ---
 
@@ -101,10 +99,10 @@ Returns `{ "message": "Trail deleted" }` on success.
 curl -X POST http://localhost:3000/comments \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $TOKEN1" \
-  -d '{"trail":"69facdda9953e946b7dedc1e","text":"Beautiful coastal views, especially at sunset. Easy access from the parking lot.","rating":5}'
+  -d '{"trail":"69facdda9953e946b7dedc1e","text":"Beautiful coastal views.","rating":5}'
 ~~~
 
-Returns the new comment with `user` and `trail` populated. The `user` field is attached server-side from the JWT, NOT from the request body. Capture the returned `_id` to use in the update and delete tests below.
+Returns the new comment with `user` and `trail` populated. The `user` field is attached server-side from the JWT, NOT from the request body.
 
 ### List all comments
 
@@ -113,8 +111,6 @@ curl http://localhost:3000/comments \
   -H "Authorization: Bearer $TOKEN1"
 ~~~
 
-Returns array with `user` and `trail` populated as nested objects.
-
 ### List comments for one trail
 
 ~~~bash
@@ -122,35 +118,31 @@ curl http://localhost:3000/comments/trail/69facdda9953e946b7dedc1e \
   -H "Authorization: Bearer $TOKEN1"
 ~~~
 
-Returns array with `user` populated. The `trail` field is just an ID string here, since the caller already knows the trail.
+`user` populated; `trail` returned as ID string only since the caller already knows the trail.
 
 ### Update a comment (creator only)
 
 ~~~bash
-curl -X PUT http://localhost:3000/comments/<COMMENT_ID_FROM_CREATE> \
+curl -X PUT http://localhost:3000/comments/<COMMENT_ID> \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $TOKEN1" \
-  -d '{"text":"Updated review: Beautiful coastal views, especially at sunset. Wear layers, gets windy.","rating":4}'
+  -d '{"text":"Updated review.","rating":4}'
 ~~~
-
-Replace `<COMMENT_ID_FROM_CREATE>` with the `_id` returned by the create step. Returns the updated comment if the JWT user is the creator.
 
 ### Delete a comment (creator only)
 
 ~~~bash
-curl -X DELETE http://localhost:3000/comments/<COMMENT_ID_FROM_CREATE> \
+curl -X DELETE http://localhost:3000/comments/<COMMENT_ID> \
   -H "Authorization: Bearer $TOKEN1"
 ~~~
 
-Returns `{ "message": "Comment deleted" }` on success.
+Returns `{ "message": "Comment deleted" }`.
 
 ---
 
 ## 403 cross-user authorization tests
 
-These tests prove that creator-only authorization actually blocks impersonation, not just allows the owner. Requires a second user.
-
-### Sign up a second user
+### Sign up second user
 
 ~~~bash
 curl -X POST http://localhost:3000/auth/sign-up \
@@ -158,51 +150,87 @@ curl -X POST http://localhost:3000/auth/sign-up \
   -d '{"username":"testuser2","password":"test1234"}'
 ~~~
 
-Stash the returned token as `TOKEN2`:
+Stash as `TOKEN2`.
 
-~~~bash
-TOKEN2="<paste testuser2's token here>"
-~~~
-
-### As testuser1, create a comment
+### testuser1 creates a comment
 
 ~~~bash
 curl -X POST http://localhost:3000/comments \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $TOKEN1" \
-  -d '{"trail":"69facdda9953e946b7dedc1e","text":"Comment created by testuser1 to test cross-user authorization.","rating":5}'
+  -d '{"trail":"69facdda9953e946b7dedc1e","text":"Comment by testuser1.","rating":5}'
 ~~~
 
-Capture the comment `_id`.
-
-### As testuser2, try to update testuser1's comment (should fail)
+### testuser2 tries to update (should 403)
 
 ~~~bash
 curl -X PUT http://localhost:3000/comments/<COMMENT_ID> \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $TOKEN2" \
-  -d '{"text":"HACKED by testuser2","rating":1}'
+  -d '{"text":"HACKED","rating":1}'
 ~~~
 
-Expected: `{ "err": "You can only edit your own comments" }`. The comment should remain untouched (verify by listing comments as testuser1 afterwards).
+Expected: `{ "err": "You can only edit your own comments" }`.
 
-### As testuser2, try to delete testuser1's comment (should fail)
+### testuser2 tries to delete (should 403)
 
 ~~~bash
 curl -X DELETE http://localhost:3000/comments/<COMMENT_ID> \
   -H "Authorization: Bearer $TOKEN2"
 ~~~
 
-Expected: `{ "err": "You can only delete your own comments" }`. The comment should remain in the database.
+Expected: `{ "err": "You can only delete your own comments" }`.
 
-### Cleanup: testuser1 deletes their own comment
+### Cleanup: testuser1 deletes own comment
 
 ~~~bash
 curl -X DELETE http://localhost:3000/comments/<COMMENT_ID> \
   -H "Authorization: Bearer $TOKEN1"
 ~~~
 
-Returns `{ "message": "Comment deleted" }`. Confirms the creator can still delete their own comment after the failed attempts above.
+---
+
+## Error handling
+
+All errors return JSON with shape `{ "err": "message" }`. Common cases:
+
+### Unknown route (catch-all 404)
+
+~~~bash
+curl -i http://localhost:3000/badroute \
+  -H "Authorization: Bearer $TOKEN1"
+~~~
+
+Returns `404` with `{ "err": "Route not found" }`.
+
+Note: hitting an unknown route WITHOUT a token returns `401 Unauthorized` from the JWT middleware, not 404. This is by design — unauthenticated probing is blocked first.
+
+### Resource not found (valid ObjectId, no match)
+
+~~~bash
+curl -i http://localhost:3000/trails/000000000000000000000000 \
+  -H "Authorization: Bearer $TOKEN1"
+~~~
+
+Returns `404` with `{ "err": "Trail not found" }`.
+
+### Malformed ObjectId (Mongoose cast error)
+
+~~~bash
+curl -i http://localhost:3000/trails/badid \
+  -H "Authorization: Bearer $TOKEN1"
+~~~
+
+Returns `500` with the raw Mongoose error message in the `err` field. The shape is consistent (`{err: ...}`) so the frontend can parse it; the message is verbose but works.
+
+### Invalid token
+
+~~~bash
+curl -i http://localhost:3000/trails \
+  -H "Authorization: Bearer not-a-real-token"
+~~~
+
+Returns `401` with `{ "err": "Invalid Token" }`.
 
 ---
 
@@ -210,9 +238,9 @@ Returns `{ "message": "Comment deleted" }`. Confirms the creator can still delet
 
 Existing test users:
 
-- `testuser1` (password `test1234`) — created session 2
-- `testuser2` (password `test1234`) — created session 4 for cross-user authorization testing
+- `testuser1` (password `test1234`)
+- `testuser2` (password `test1234`)
 
-Trails: 8 seeded via `node seed.js`. The seed script wipes the trails collection before inserting, so it's safe to rerun any time.
+Trails: 9 seeded via `node seed.js` (8 Bay Area/Sierra + Vernal Falls Footbridge added in session 5). Seed wipes the trails collection before inserting; safe to rerun.
 
-To get the full list of trail `_id`s for use in other tests, hit `GET /trails` after signing in.
+Get the full list of trail `_id`s by hitting `GET /trails` after signing in.
