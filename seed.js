@@ -68,6 +68,15 @@ const trails = [
     imageUrl: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1200',
     address: 'Mist Trail, Yosemite National Park, CA 95389, USA'
   }
+  ,
+  {
+    name: 'Vernal Falls Footbridge',
+    lat: 37.7260607,
+    lng: -119.5516341,
+    description: 'A 2-mile out-and-back paved trail along the Mist Trail in Yosemite Valley leading to a footbridge with views of Vernal Fall in the distance. Moderate elevation gain, good water and restroom facilities at the bridge.',
+    imageUrl: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1200',
+    address: 'John Muir Trail, Yosemite National Park, CA 95389, USA'
+  }
 ];
 
 const seedTrails = async () => {

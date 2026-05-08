@@ -28,6 +28,17 @@ app.use(verifyJwt);
 app.use('/trails', trailsController);
 app.use('/comments', commentsController);
 
+// Catch-all 404 for unmatched routes
+app.use((req, res) => {
+  res.status(404).json({ err: 'Route not found' });
+});
+
+// Generic error handler (must have 4 parameters for Express to recognize it)
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ err: err.message || 'Internal server error' });
+});
+
 app.listen(process.env.PORT, () => {
   console.log(`The express app is ready on port ${process.env.PORT}!`);
 });
