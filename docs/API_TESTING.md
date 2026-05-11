@@ -56,7 +56,7 @@ curl http://localhost:3000/trails/69facdda9953e946b7dedc1e \
   -H "Authorization: Bearer $TOKEN1"
 ~~~
 
-(That ID is Lands End Trail from the seeded data. IDs change on reseed.)
+(That ID is illustrative. See "How to actually run these" at the bottom for getting current IDs.)
 
 ### Create a trail
 
@@ -167,7 +167,7 @@ curl -X POST http://localhost:3000/comments \
 curl -X PUT http://localhost:3000/comments/<COMMENT_ID> \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $TOKEN2" \
-  -d '{"text":"HACKED","rating":1}'
+  -d '{"text":"Modified by testuser2","rating":1}'
 ~~~
 
 Expected: `{ "err": "You can only edit your own comments" }`.
@@ -241,6 +241,29 @@ Existing test users:
 - `testuser1` (password `test1234`)
 - `testuser2` (password `test1234`)
 
-Trails: 9 seeded via `node seed.js` (8 Bay Area/Sierra + Vernal Falls Footbridge added in session 5). Seed wipes the trails collection before inserting; safe to rerun.
+Trails: 9 seeded via `node seed.js` (8 Bay Area/Sierra + Vernal Falls Footbridge). Seed wipes the trails collection before inserting; safe to rerun.
 
-Get the full list of trail `_id`s by hitting `GET /trails` after signing in.
+---
+
+## How to actually run these
+
+The trail and comment IDs shown above are illustrative — the actual IDs in your local database will differ. To make these commands runnable:
+
+1. Sign in to get a token (see Auth section).
+2. Stash it: `TOKEN1="<token>"`.
+3. List trails to find IDs you care about:
+
+~~~bash
+curl -s http://localhost:3000/trails -H "Authorization: Bearer $TOKEN1" | jq
+~~~
+
+(Install jq with `brew install jq` for pretty-printing.)
+
+4. Pull a specific trail ID by name with jq:
+
+~~~bash
+curl -s http://localhost:3000/trails -H "Authorization: Bearer $TOKEN1" \
+  | jq '.[] | select(.name == "Lands End Trail") | ._id'
+~~~
+
+5. Substitute the resulting `_id` into any command above. Same approach for comment IDs after you create one.

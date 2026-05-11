@@ -18,7 +18,7 @@ TOKEN=$(curl -s -X POST http://localhost:3000/auth/sign-in \
   | sed -E 's/.*"token":"([^"]+)".*/\1/')
 ~~~
 
-Stash testuser1's token (whose comment carlosuser will try to modify):
+Stash testuser1's token (testuser1 owns a comment that carlosuser will try to modify in step 5):
 
 ~~~bash
 TOKEN1=$(curl -s -X POST http://localhost:3000/auth/sign-in \
@@ -69,23 +69,23 @@ The most interesting endpoint architecturally:
 curl -s -X POST http://localhost:3000/comments \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $TOKEN" \
-  -d '{"trail":"69fd4648cc491c44e5d2201e","text":"Demo comment from carlosuser.","rating":4}' | jq
+  -d '{"trail":"6a012c966c79f355cfb91063","text":"Demo comment from carlosuser.","rating":4}' | jq
 ~~~
 
 Notice: the request body does NOT include a `user` field. The server attaches the user identity from the JWT, not from anything the client sends. This prevents impersonation. The response shows `user` populated as carlosuser, plus `trail` populated with name "Lands End Trail" — Mongoose `.populate()` doing its job.
 
-### 5. carlosuser tries to modify testuser1's comment (should 403)
+### 5. carlosuser tries to modify testuser1's comment (authorization test, should 403)
 
-testuser1 already left a comment on Lands End Trail. carlosuser tries to overwrite it:
+testuser1 owns a comment on Lands End Trail. carlosuser does not. The controller compares `req.user._id` (from the JWT) against `comment.user` and rejects the request when they don't match:
 
 ~~~bash
-curl -s -i -X PUT http://localhost:3000/comments/69fd523225369a9d1fe54b98 \
+curl -s -i -X PUT http://localhost:3000/comments/6a0130755d227fcac58ffa84 \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $TOKEN" \
-  -d '{"text":"HACKED by carlosuser","rating":1}'
+  -d '{"text":"Modified by carlosuser","rating":1}'
 ~~~
 
-Response: `HTTP/1.1 403 Forbidden` with `{"err":"You can only edit your own comments"}`. The controller compares `req.user._id` (from the JWT) against `comment.user`, and rejects when they don't match. Authorization is enforced server-side, not by the frontend hiding buttons.
+Response: `HTTP/1.1 403 Forbidden` with `{"err":"You can only edit your own comments"}`. Authorization is enforced server-side, not by the frontend hiding buttons.
 
 ---
 
@@ -102,7 +102,7 @@ Response: `HTTP/1.1 403 Forbidden` with `{"err":"You can only edit your own comm
 
 - User `carlosuser` (password `carlos1234`) exists
 - User `testuser1` (password `test1234`) exists
-- Trail "Lands End Trail" `_id`: `69fd4648cc491c44e5d2201e`
-- testuser1 comment on Lands End `_id`: `69fd523225369a9d1fe54b98`
+- Trail "Lands End Trail" `_id`: `6a012c966c79f355cfb91063`
+- testuser1 comment on Lands End `_id`: `6a0130755d227fcac58ffa84`
 
-If reseeding happens, IDs change. Re-run the setup steps in `docs/API_TESTING.md` to get current IDs and recreate the testuser1 comment.
+If reseeding happens, all trail and comment IDs change. Re-run `node seed.js`, get a fresh Lands End ID via `curl /trails | jq '.[] | select(.name == "Lands End Trail") | ._id'`, recreate testuser1's comment via the API, and update the IDs in this file.
