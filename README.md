@@ -26,55 +26,64 @@ Three entities: User, Trail, Comment. A User has many Comments, a Trail has many
 
 ## Status
 
-Backend is functional and tested. Auth, trails CRUD, and comments CRUD are all working against MongoDB Atlas. 9 trails seeded for development. JSON error middleware in place. Frontend integration and Heroku deployment are next.
+Deployed and live.
+
+- Backend (Heroku): https://uratetrail-app-back-end-7c6c4acd90d4.herokuapp.com
+- Frontend (Netlify): <WILLIAM_NETLIFY_URL>
+
+## Screenshots
+
+![Landing](docs/uratetrail-lander.jpg)
+
+![Dashboard](docs/uratetrail-dashboard.jpg)
 
 ## Getting started
 
 ### Prerequisites
 
-- Node.js 18+
+- Node.js 20.x (pinned via `package.json` engines for Heroku)
 - A MongoDB Atlas connection URI (ask Carlos for the team's shared URI)
 
 ### Setup
 
 Clone the repo and install dependencies:
 
-~~~bash
+```
 git clone https://github.com/lecharles/uratetrail-app-back-end.git
 cd uratetrail-app-back-end
 npm install
-~~~
+```
 
 Create a `.env` file at the project root with these three variables:
 
-~~~
+```
 MONGODB_URI=<the team's shared Atlas URI>
 SECRET_KEY=<the team's shared JWT signing secret>
 PORT=3000
-~~~
+```
 
 Both `MONGODB_URI` and `SECRET_KEY` must match across team members so that data and JWTs are interchangeable. Ask Carlos directly for the values; they are not in any committed file.
 
 Run the dev server:
 
-~~~bash
+```
 npm run dev
-~~~
+```
 
 You should see:
 
-~~~
+```
 Connected to MongoDB uratetrail.
 The express app is ready on port 3000!
-~~~
+```
 
 ### Seeding test data
 
 The trails collection ships with 9 hand-picked Bay Area and Sierra trails. To populate (or repopulate) them:
 
-~~~bash
+```
 node seed.js
-~~~
+```
 
 This wipes the trails collection before inserting, so it is safe to rerun any time.
 
