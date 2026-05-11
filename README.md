@@ -29,7 +29,7 @@ Three entities: User, Trail, Comment. A User has many Comments, a Trail has many
 Deployed and live.
 
 - Backend (Heroku): https://uratetrail-app-back-end-7c6c4acd90d4.herokuapp.com
-- Frontend (Netlify): <WILLIAM_NETLIFY_URL>
+- Frontend (Netlify): https://uratetrail.netlify.app/ 
 
 ## Screenshots
 
