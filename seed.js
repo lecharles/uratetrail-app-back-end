@@ -9,7 +9,7 @@ const trails = [
     lat: 37.7858035,
     lng: -122.5033753,
     description: 'A 3.4-mile coastal trail along the northwestern edge of San Francisco with views of the Golden Gate Bridge, Marin Headlands, and shipwreck remains at low tide.',
-    imageUrl: 'https://images.unsplash.com/photo-1568393691080-c0e9d6b73a39?w=1200',
+    imageUrl: 'https://images.unsplash.com/photo-1644772458680-bf799993ae1a?w=1200',
     address: 'Lands End Trail, San Francisco, CA 94121, USA'
   },
   {
