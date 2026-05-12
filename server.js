@@ -12,7 +12,7 @@ const verifyJwt = require('./middlewares/verify-jwt');
 
 require('./db/connection');
 
-app.use(cors());
+app.use(cors()); // roadmap add allowlist for front url only
 app.use(express.json());
 app.use(logger('dev'));
 

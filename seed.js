@@ -17,7 +17,7 @@ const trails = [
     lat: 37.9024181,
     lng: -122.5577838,
     description: 'A historic 7.5-mile trail from Mill Valley to Stinson Beach, climbing through redwood groves and crossing Mount Tamalpais. Home to the oldest trail race in America.',
-    imageUrl: 'https://images.unsplash.com/photo-1551632811-561732d1e306?w=1200',
+    imageUrl: 'https://images.unsplash.com/photo-1574106197032-14603e1bb6d0?w=1200',
     address: 'Dipsea Trail, Mill Valley, CA, USA'
   },
   {
@@ -65,7 +65,7 @@ const trails = [
     lat: 37.726083,
     lng: -119.5490334,
     description: 'A strenuous 3-mile round-trip in Yosemite Valley climbing 1,000 feet via stone staircases alongside Vernal Fall. Hikers get drenched by spray in spring runoff season.',
-    imageUrl: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1200',
+    imageUrl: 'https://images.unsplash.com/photo-1685401522160-bc0050fef58a?w=1200',
     address: 'Mist Trail, Yosemite National Park, CA 95389, USA'
   }
   ,
